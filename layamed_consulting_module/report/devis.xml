@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@class='page']/div[@class='oe_structure']" position="before">
+            <div class="row mt-4">
+                <!-- Left side: Custom information -->
+                <div class="col-6">
+                    <div>
+                        <h4 class="mb-2" style="color:black"><u><b><t t-if="doc.state == 'sale'">Bon de commande</t><t t-else="">Devis</t></b></u></h4>
+                        <p class="mb-1" style="color:black"><strong>Votre Correspondant</strong></p>
+                        <p class="mb-1">Mehdi BEN JEBARA/Leila BIRROUZ</p>
+                        <p style="color:black"><b>Tel 0781308899/0661756888</b></p>
+                    </div>
+                </div>
+                <!-- Right side: Address information (original) -->
+                <div class="col-6">
+                        <p style="color: black;"><strong>Nom du fournisseur : </strong><span t-field="doc.partner_id.name"/></p>
+                        <p style="color: black;"><strong>Adresse : </strong><span t-field="doc.partner_id.street"/></p>
+                        <t t-if="doc.partner_id.street2">
+                            <p><span t-field="doc.partner_id.street2"/></p>
+                        </t>
+                    <p style="color: black;" t-if="doc.partner_id.phone"><strong>Téléphone : </strong><span t-field="doc.partner_id.phone"/></p>
+
+                        <!--
+                    <p>
+                            <span t-field="doc.partner_id.zip"/> <span t-field="doc.partner_id.city"/>
+                        </p>
+
+                        <p><span t-field="doc.partner_id.country_id"/></p>
+                        <p t-if="doc.partner_id.phone"><strong>Téléphone : </strong><span t-field="doc.partner_id.phone"/></p>
+                        <p t-if="doc.partner_id.email"><strong>Email : </strong><span t-field="doc.partner_id.email"/></p>
+
+                    <p t-if="doc.partner_id.vat" style="margin-bottom: 8px;">
+                            <strong>
+                                <t t-if="doc.company_id.account_fiscal_country_id.vat_label" t-out="doc.company_id.account_fiscal_country_id.vat_label"/>
+                                <t t-else="">Tax ID</t> :
+                            </strong>
+                            <span t-field="doc.partner_id.vat"/>
+                        </p>
+                    -->
+
+                </div>
+            </div>
+        </xpath>
+        <!-- Remove the original address section since we've moved it to our custom layout -->
+        <xpath expr="//t[@t-set='address']" position="replace">
+            <t t-set="address">
+                <!-- Intentionally left empty as we're displaying the address in our custom layout -->
+            </t>
+        </xpath>
+
+        <xpath expr="//h2[@class='mt-4']/span[2]" position="replace">
+            <span style="font-size: 14px; color: black; text-decoration: underline;" t-elif="doc.state in ['draft','sent']"><b>Devis N° :</b></span>
+        </xpath>
+        <xpath expr="//h2[@class='mt-4']/span[3]" position="replace">
+            <span style="font-size: 14px; color: black; text-decoration: underline;" t-else=""><b>BC N° : LMC</b></span>
+        </xpath>
+        <xpath expr="//h2[@class='mt-4']/span[4]" position="replace">
+            <span style="font-size: 14px; color: black; text-decoration: underline;">
+                <b>
+                    <t-field t-field="doc.name"/>-<t t-esc="time.strftime('%Y')"/>
+                </b>
+            </span>
+        </xpath>
+        <!-- Change "#Order " to "Quotation/Devis N° : "
+        <xpath expr="//h2[@class='mt-4']/span[3]" position="replace">
+            <span t-if="doc.state == 'sale'" style="font-size: 14px; color: black; text-decoration: underline;">
+                <b>BC N° : LMC</b>
+            </span>
+            <span t-else="" style="font-size: 14px; color: black; text-decoration: underline;">
+                <b>Quotation/Devis N° : </b>
+            </span>
+        </xpath>
+        <xpath expr="//h2[@class='mt-4']/span[2]" position="replace">
+            <span t-if="doc.state in ['draft','sent']" style="font-size: 14px; color: black; text-decoration: underline;">
+                <b>Quotation/Devis N° : </b>
+            </span>
+        </xpath>
+
+         <xpath expr="//h2[@class='mt-4']/span[4]" position="replace">
+             <span t-field="doc.name" style="font-size: 14px; color: black; text-decoration: underline;"><b>SO0000</b></span>
+        </xpath>
+-->
+        <!-- Rearrange order date, salesperson, and expiration date to display one under the other -->
+        <xpath expr="//div[@id='informations']" position="replace">
+            <div class="row mt-4 mb-2" id="informations">
+                <div t-if="doc.client_order_ref" class="col-auto col-3 mw-100 mb-2" name="informations_reference">
+                    <strong>Your Reference:</strong><br/>
+                    <span class="m-0" t-field="doc.client_order_ref">SO0000</span>
+                </div>
+
+                <!-- Order information in vertical layout -->
+                <div class="col-auto col-3 mw-100 mb-2">
+                    <!-- Order Date -->
+                    <div t-if="doc.date_order" name="informations_date">
+                        <strong t-if="doc.state in ['draft', 'sent']">Date d'ordre:</strong>
+                        <strong t-else="">Date d'ordre:</strong><br/>
+                        <span class="m-0" t-field="doc.date_order" t-options='{"widget": "date"}'>2023-12-31</span>
+                    </div>
+                    <div t-if="doc.state == 'sale'">
+                        <strong>Reference:</strong><br/>
+                        <span>
+                            <b><u>Offre de Prix / devis N°</u> :<t-field t-field="doc.name"/></b>
+                        </span>
+                    </div>
+                    <!-- Salesperson -->
+                    <div t-if="doc.user_id.name">
+                        <!--
+                        <strong>Salesperson:</strong><br/>
+                        <span class="m-0" t-field="doc.user_id">Mitchell Admin</span>
+                        -->
+                    </div>
+
+                    <!-- Expiration Date -->
+                    <div t-if="doc.validity_date and doc.state in ['draft', 'sent']" name="expiration_date">
+                        <strong>Date d'expiration:</strong><br/>
+                        <span class="m-0" t-field="doc.validity_date">2023-12-31</span>
+                    </div>
+
+                    <!-- Casablanca date -->
+                    <div class="col-12 text-end mb-3">
+                        <strong>Casablanca le, </strong>
+                        <span t-field="doc.date_order" t-options='{"widget": "date"}'>2023-12-31</span>
+                    </div>
+
+                </div>
+            </div>
+        </xpath>
+        <!-- For the table -->
+        <xpath expr="//th[@name='th_taxes']" position="replace"/>
+        <xpath expr="//td[@name='td_taxes']" position="replace"/>
+
+         <xpath expr="//th[@name='th_quantity']" position="replace">
+            <th name="th_quantity" class="text-center">QTE</th>
+         </xpath>
+        <xpath expr="//th[@name='th_priceunit']" position="replace">
+            <th name="th_priceunit" class="text-center">PU HT</th>
+        </xpath>
+        <xpath expr="//th[@name='th_subtotal']" position="replace">
+            <th name="th_subtotal" class="text-center">Total</th>
+        </xpath>
+
+        <xpath expr="//td[@name='td_quantity']" position="attributes">
+            <attribute name="class">text-center</attribute>
+        </xpath>
+
+        <xpath expr="//td[@name='td_priceunit']" position="attributes">
+            <attribute name="class">text-center</attribute>
+        </xpath>
+
+        <xpath expr="//td[@name='td_subtotal']" position="attributes">
+            <attribute name="class">text-center</attribute>
+        </xpath>
+
+
+        <xpath expr="//tbody[@class='sale_tbody']" position="after">
+        <tr class="is-subtotal text-center o_main_table" >
+            <td style="border-top-style: none;border-bottom-style: none;"></td>
+            <td style="border-top-style: none; border-bottom-style: none;" name="td_untaxed_label" class="text-center">
+                <strong>Montant HT</strong>
+            </td>
+            <td style="border-top-style: none;border-bottom-style: none;"></td>
+            <td style="border-top-style: none;border-bottom-style: none;" name="td_untaxed_value" colspan="99" class="text-center">
+                <b><span t-out="doc.amount_untaxed" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></b>
+            </td>
+        </tr>
+            <tr class="is-subtotal text-center">
+                <td style="border-top-style: none;border-bottom-style: none;"></td>
+            <td style="border-top-style: none; border-bottom-style: none;" name="td_tax_label" class="text-center">
+                <strong>
+                TVA à
+                <t t-if="doc.order_line and doc.order_line.mapped('tax_id')">
+                    <t t-out="(doc.order_line.mapped('tax_id').mapped('amount')[0] or 0)"/>%
+                </t>
+                <t t-if="not doc.order_line or not doc.order_line.mapped('tax_id')">
+                    0.00%
+                </t>
+            </strong>
+            </td>
+                <td style="border-top-style: none;border-bottom-style: none;"></td>
+            <td style="border-top-style: none;border-bottom-style: none;" name="td_tax_value" colspan="99" class="text-center">
+                <b><span t-out="doc.amount_tax" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></b>
+            </td>
+        </tr>
+        <!-- Total TTC Row -->
+        <tr class="is-subtotal text-center">
+            <td style="border-top-style: none;border-left-style: none;"></td>
+            <td style="border-top-style: none;" name="td_total_ttc_label" class="text-center">
+                <strong>Total TTC</strong>
+            </td>
+            <td style="border-top-style: none;"></td>
+            <td style="border-top-style: none;" name="td_total_ttc_value" colspan="99" class="text-center">
+                <b><span t-out="doc.amount_total" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></b>
+            </td>
+        </tr>
+        </xpath>
+
+        <xpath expr="//div[@name='so_total_summary']" position="replace"/>
+
+        <xpath expr="//span[@t-field='doc.payment_term_id.note']" position="replace">
+            <p style="color: black; text-decoration: underline;"><b>Condition du paiement : </b><span t-field="doc.payment_term_id"/></p>
+        </xpath>
+
+    </template>
+</odoo>

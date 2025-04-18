@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_transaction_check_template">
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="docs"/>
+            <main>
+                <div class="page">
+                    <div class ="mb-2" style="width: 48%; float: left;">
+                        <table style="font-size: 11px; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="padding:6px;font-size:15px;background-color: #B4B4B8;">Employeur</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p style="font-size:18px;color:black;margin-left:4px;"><b><t t-esc="doc.company_id.name"/></b></p>
+                                        <p style="font-size:13px;color:black;margin-left:4px;"><t t-esc="doc.company_id.street or ''"/></p>
+                                        <p style="font-size:13px;color:black;margin-left:4px;"><t t-esc="doc.company_id.city or ''"/> - <t t-esc="doc.company_id.country_id.name or ''"/></p>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p class="text-center" style="font-size:13px;color:black;"><strong>N° CNSS:</strong> <t t-esc="doc.company_id.x_studio_n_cnss"/></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Employee Information Table -->
+                    <div style="width: 48%; float: right;">
+                        <table style="font-size: 11px; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="padding:6px;font-size:15px;background-color: #B4B4B8;">Bulettin de paie</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p style="font-size:18px;color:black;margin-left:4px;"><t t-esc="doc.employee_id.name"/></p>
+                                        <p style="font-size:13px;color:black;margin-left:4px;"><t t-esc="doc.employee_id.private_street"/></p>
+                                    </td>
+                                </tr>
+                                <tr style="height: 25px;">
+                                    <td>
+                                    <p class="text-center" style="font-size:13px;color:black;"><strong>N° CNSS:</strong> <t t-esc="doc.employee_id.ssnid"/></p>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                        <table style="width: 100%; border-collapse: collapse;margin-top:3px;">
+                            <thead>
+                                <tr style="background-color: #B4B4B8;">
+                                    <th style="padding:3px;font-size:13px;" class="text-center">Matric</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">Date d'entrée</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">Date naiss</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">SF/ENF</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">CIN</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">FONCTION</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">Section</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">Période</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid;">>
+                                    <td style="padding:3px;font-size:13px;" class="text-center"><t t-esc="doc.employee_id.x_studio_matricule or ''"/></td>
+                                    <td style="padding:3px;font-size:13px;" class="text-center"><t t-esc="doc.contract_id.date_start or ''"/></td>
+                                    <td style="padding:3px;font-size:13px;" class="text-center"><t t-esc="doc.employee_id.birthday or ''"/></td>
+                                    <td style="padding:3px;font-size:13px;" class="text-center"><t t-esc="doc.employee_id.children or '0'"/></td>
+                                    <td style="padding:3px;font-size:13px;" class="text-center"><t t-esc="doc.employee_id.x_studio_cin or ''"/></td>
+                                    <td style="padding:3px;font-size:13px;" class="text-center"><t t-esc="doc.employee_id.job_id.name or ''"/></td>
+                                    <td style="padding:3px;font-size:13px;" class="text-center"><t t-esc="doc.employee_id.department_id.name or ''"/></td>
+                                    <td style="padding:3px;font-size:13px;" class="text-center"><t t-esc="doc.date_from" t-options='{"widget": "date", "format": "MMMM yyyy"}'/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                <!-- Salary Details Table -->
+                <div class="mt-2">
+
+                <table style="width: 100%;">
+                    <thead>
+                        <tr style="background-color: #B4B4B8;">
+                            <th style="padding:3px;font-size:14px;background-color: #B4B4B8;" class="text-center">RUBRIQUE</th>
+                            <th style="padding:3px;font-size:14px;background-color: #B4B4B8;" class="text-center">BASE</th>
+                            <th style="padding:3px;font-size:14px;background-color: #B4B4B8;" class="text-center">TAUX</th>
+                            <th style="padding:3px;font-size:14px;background-color: #B4B4B8;" class="text-center">GAIN</th>
+                            <th style="padding:3px;font-size:14px;background-color: #B4B4B8;" class="text-center">RETENU</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="total_gain" t-value="0"/>
+                        <t t-set="total_retenu" t-value="0"/>
+                        <t t-foreach="doc.line_ids" t-as="line">
+                            <tr>
+                                <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-left">
+                                    <t t-esc="line.salary_rule_id.name"/>
+                                </td>
+
+                                <!-- BASE Column -->
+                                <td style="padding:3px;font-size:13px;background-color: #f8f9fa;text-align:center;" class="text-right">
+                                    <t t-if="line.category_id.code == 'GROSS'">
+                                        <t t-esc="line.amount" t-options='{"widget": "float", "precision": 2}'/>
+                                    </t>
+                                    <t t-if="line.category_id.code == 'BASIC'">
+                                        <t t-esc="line.amount" t-options='{"widget": "float", "precision": 2}'/>
+                                    </t>
+                                    <t t-if="line.category_id.code == 'NET'">
+                                        <t t-esc="line.amount" t-options='{"widget": "float", "precision": 2}'/>
+                                    </t>
+                                    <t t-if="line.category_id.code == 'UNTAXABLE_DED'">
+                                        <t t-esc="doc.line_ids.filtered(lambda l: l.category_id.code == 'BASIC')[0].amount if doc.line_ids.filtered(lambda l: l.category_id.code == 'BASIC') else ''" t-options='{"widget": "float", "precision": 2}' />
+                                    </t>
+                                    <t t-else="">
+                                        <!-- Empty if not UNTAXED_DEDUCTIONS -->
+                                    </t>
+                                </td>
+
+                                <!-- TAUX Column -->
+                                <td style="padding:3px;font-size:13px;background-color: #f8f9fa;text-align:center;" class="text-right">
+
+                                    <t t-if="line.category_id.code == 'UNTAXABLE_DED'">
+                                        <t t-esc="line.parameter_value"/>
+                                    </t>
+                                    <t t-else="">
+                                        <!-- Empty if not BASIC -->
+                                    </t>
+                                </td>
+
+                                <!-- GAIN Column -->
+                                <td style="padding:3px;font-size:13px;background-color: #f8f9fa;text-align:center;" class="text-right">
+                                    <t t-if="line.category_id.code == 'BASIC' or line.category_id.code == 'ALW'">
+                                        <t t-esc="line.amount" t-options='{"widget": "float", "precision": 2}'/>
+                                         <t t-set="total_gain" t-value="total_gain + line.amount"/>
+                                    </t>
+                                    <t t-else="">
+                                        <!-- Empty if not BASIC or ALLOCATION -->
+                                    </t>
+                                </td>
+
+                                <!-- RETENU Column -->
+                                <td style="padding:3px;font-size:13px;background-color: #f8f9fa;text-align:center;" class="text-right">
+                                    <t t-if="line.category_id.code == 'UNTAXABLE_DED'">
+                                        <t t-esc="line.amount" t-options='{"widget": "float", "precision": 2}'/>
+                                        <t t-set="total_retenu" t-value="total_retenu + line.amount"/>
+                                    </t>
+                                    <t t-else="">
+                                        <!-- Empty if not UNTAXED_DEDUCTIONS -->
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+
+                        <!-- Totals row -->
+                        <tr style="font-weight: bold; background-color: #f8f9fa;">
+                            <td colspan="3" class="text-right" style="padding:3px;font-size:13px;background-color: #f8f9fa;">Total</td>
+                            <td style="font-size:13px;padding:3px;text-align:center;">
+                                <t t-esc="total_gain" t-options='{"widget": "float", "precision": 2}'/>
+                            </td>
+                            <td style="font-size:13px;padding:3px;text-align:center;">
+                                <t t-esc="total_retenu" t-options='{"widget": "float", "precision": 2}'/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                    </div>
+                <!-- Final Row with Leave Status, Advances, and Net Pay -->
+                    <div class="row mt-4" style="display: flex; justify-content: space-between;">
+                        <!-- Left Side: Leave Status Table -->
+                        <table style="width: 30%; border: 1px solid black;" class="table-sm">
+                            <tr>
+                                <th colspan="2" style="border-bottom: 1px solid black; padding: 2px; font-size: 11px;color:black;background-color:#B4B4B8;">
+                                    Etat des congés au <t t-esc="doc.date_to" t-options='{"widget": "date"}'/>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px; font-size: 13px;">Reliquat 2024 :</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px; font-size: 13px;">Ancienneté :</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px; font-size: 13px;">Congé spécial :</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px; font-size: 13px;">Alloué 2025 :</td>
+                            </tr>
+                        </table>
+
+                        <!-- Middle: Advances Table -->
+                        <table style="width: 30%; border: 1px solid black; margin-left:3px;" class="table-sm">
+                            <tr>
+                                <th colspan="2" style="border-bottom: 1px solid black; padding: 2px; font-size: 11px;color:black;background-color:#B4B4B8;">
+                                    Etat des avances au <t t-esc="doc.date_to" t-options='{"widget": "date"}'/>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px; font-size: 13px;">Créd. antérieur :</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px; font-size: 13px;">Créd. période :</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px; font-size: 13px;">Remb. période :</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px; font-size: 13px;">Solde :</td>
+                            </tr>
+                        </table>
+
+                        <!-- Right Side: NET A PAYER -->
+                        <div style="width: 30%;margin-left:200px; display: flex; align-items: right; justify-content: flex-end;">
+                            <strong style="font-size: 12px;color:black">NET A PAYER :
+                                <t t-esc="doc.net_wage" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                            </strong>
+                        </div>
+                    </div>
+                <div class="mt-1">
+                    <p style="font-size:13px;color:black;margin-bottom:1px;"><b>CUMUL/Année</b></p>
+                        <table style="width: 100%;">
+                            <thead>
+                                <tr style="background-color: #B4B4B8;">
+                                    <th style="padding:3px;font-size:13px;" class="text-center">J.TRAV</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">J.CONG</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">BRUT</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">BRUT IMPOS</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">NET IMPOS</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">RETRAITE</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">MUTU</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">IPE</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">CNSS</th>
+                                    <th style="padding:3px;font-size:13px;" class="text-center">IR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <t t-set="today" t-value="datetime.date.today()"/>
+                                <t t-set="employee" t-value="doc.employee_id"/>
+                                <t t-set="contract" t-value="employee.contract_id"/>
+                                <t t-set="days_worked" t-value="(today - contract.date_start).days if contract.date_start else 0"/>
+
+                                <tr>
+                                     <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center">
+                                        <t t-esc="days_worked"/>
+                                    </td>
+                                    <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center"></td>
+                                    <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center"></td>
+                                    <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center"></td>
+                                    <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center"></td>
+                                    <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center"></td>
+                                    <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center"></td>
+                                    <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center"></td>
+                                    <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center"></td>
+                                    <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                <div class="text-right mt-2" style="float: right;">
+                        <table>
+                            <thead>
+                                <tr style="background-color: #B4B4B8;">
+                                    <th style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center">PAYER PAR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <td style="padding:3px;font-size:13px;background-color: #f8f9fa;" class="text-center">
+                                    <t t-esc="doc.x_studio_payer_par or 'N/A'"/>
+                                </td>
+                            </tbody>
+                        </table>
+                </div>
+
+                <!-- Signature Section -->
+                <div style="margin: 90px auto 0 auto; text-align: center; width: fit-content;">
+                    <p style="font-size: 14px; color: black;">Signature</p>
+                </div>
+
+            </main>
+        </t>
+    </template>
+
+         <record id="report_custom_payslip" model="ir.actions.report">
+            <field name="name">Bulletin de paie</field>
+            <field name="model">hr.payslip</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">layamed_custom_module.report_transaction_check_template</field>
+            <field name="report_file">layamed_custom_module.report_transaction_check_template</field>
+            <field name="print_report_name">'Payslip - %s' % (object.number)</field>
+            <field name="binding_model_id" eval="False"/>
+            <field name="binding_type">report</field>
+        </record>
+</odoo>
