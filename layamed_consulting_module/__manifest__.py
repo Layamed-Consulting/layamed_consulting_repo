@@ -22,8 +22,8 @@
     ],
     'assets': {
         'web.assets_frontend': [
-            'layamed_custom_module/static/src/js/references_slider.js',
-            'layamed_custom_module/static/src/css/reference_website.css',
+            'layamed_consulting_module/static/src/js/references_slider.js',
+            'layamed_consulting_module/static/src/css/reference_website.css',
         ],
     },
     #'assets': {
