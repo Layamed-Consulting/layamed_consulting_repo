@@ -292,8 +292,8 @@
             <field name="name">Bulletin de paie</field>
             <field name="model">hr.payslip</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">layamed_custom_module.report_transaction_check_template</field>
-            <field name="report_file">layamed_custom_module.report_transaction_check_template</field>
+            <field name="report_name">layamed_consulting_module.report_transaction_check_template</field>
+            <field name="report_file">layamed_consulting_module.report_transaction_check_template</field>
             <field name="print_report_name">'Payslip - %s' % (object.number)</field>
             <field name="binding_model_id" eval="False"/>
             <field name="binding_type">report</field>

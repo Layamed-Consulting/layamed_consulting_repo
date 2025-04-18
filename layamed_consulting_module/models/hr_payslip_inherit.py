@@ -5,7 +5,7 @@ class HrPayslip(models.Model):
 
     def action_custom_payslip(self):
         """Custom logic for generating the custom payslip"""
-        return self.env.ref('layamed_custom_module.report_custom_payslip').report_action(self)
+        return self.env.ref('layamed_consulting_module.report_custom_payslip').report_action(self)
 
 
 class HrPayslipLine(models.Model):
