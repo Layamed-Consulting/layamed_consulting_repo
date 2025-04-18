@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="custom_homepage_references_slider" inherit_id="website.homepage">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <section class="reference-slider-section py-5 bg-light">
+                <div class="container text-center">
+                    <div class="position-relative slider-wrapper-container my-4">
+                        <!-- Left arrow -->
+                        <button class="slider-arrow left-arrow" id="refSliderPrev">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+
+                        <!-- Logos inside a scrollable container -->
+                        <div class="slider-wrapper overflow-hidden px-5" id="refLogoContainer">
+                            <div class="d-flex align-items-center" style="min-width: max-content;">
+            <t t-foreach="range(1, 28)" t-as="i">
+                <div class="logo-item mx-3" style="width: 160px;">
+                    <img t-att-src="'/layamed_custom_module/static/src/img/logo_%s.png' % i"
+                         alt="Logo"
+                         class="img-fluid"
+                         style="height: 60px; width: auto; object-fit: contain;" />
+                </div>
+            </t>
+        </div>
+                        </div>
+
+                        <!-- Right arrow -->
+                        <button class="slider-arrow right-arrow" id="refSliderNext">
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+</div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+</odoo>
