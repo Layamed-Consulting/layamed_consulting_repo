@@ -14,7 +14,7 @@
                             <div class="d-flex align-items-center" style="min-width: max-content;">
             <t t-foreach="range(1, 28)" t-as="i">
                 <div class="logo-item mx-3" style="width: 160px;">
-                    <img t-att-src="'/layamed_custom_module/static/src/img/logo_%s.png' % i"
+                    <img t-att-src="'/layamed_consulting_module/static/src/img/logo_%s.png' % i"
                          alt="Logo"
                          class="img-fluid"
                          style="height: 60px; width: auto; object-fit: contain;" />
