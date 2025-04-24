@@ -10,7 +10,7 @@ publicWidget.registry.ReferenceSlider = publicWidget.Widget.extend({
     },
 
     start() {
-        this.$scrollContainer = this.$('#refLogoContainer'); // Store the scrollable container
+        this.$scrollContainer = this.$('#refLogoContainer');
         return this._super(...arguments);
     },
 
@@ -21,15 +21,42 @@ publicWidget.registry.ReferenceSlider = publicWidget.Widget.extend({
 
     _onClickNext() {
         console.log("➡️ Right (Next) icon clicked");
-        this._scrollBy(300); // Scroll right by 300px
+        this._scrollBy(300, true); // Scroll right by 300px and check if it's the end
     },
 
-    _scrollBy(pixels) {
+    _scrollBy(pixels, checkLoop = false) {
         if (this.$scrollContainer && this.$scrollContainer.length) {
-            this.$scrollContainer[0].scrollBy({
-                left: pixels,
-                behavior: 'smooth'
-            });
+            const element = this.$scrollContainer[0];
+            const start = element.scrollLeft;
+            const end = start + pixels;
+            const duration = 700;
+
+            const startTime = performance.now();
+
+            const animateScroll = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeInOut = 0.5 * (1 - Math.cos(Math.PI * progress));
+
+                element.scrollLeft = start + (end - start) * easeInOut;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateScroll);
+                } else if (checkLoop && this._isAtEnd()) {
+                    setTimeout(() => {
+                        element.scrollLeft = 0; // Jump back instantly to the start
+                    }, 300); // Wait briefly before jumping back
+                }
+            };
+
+            requestAnimationFrame(animateScroll);
         }
+    },
+
+    _isAtEnd() {
+        const element = this.$scrollContainer[0];
+        // Buffer is small number to allow slight offset tolerance
+        const buffer = 5;
+        return (element.scrollWidth - element.scrollLeft - element.clientWidth) <= buffer;
     },
 });
